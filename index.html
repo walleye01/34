@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=afb94237-9b36-4a88-b139-a864ce173e51
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <!-- Import Google Fonts modern -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 0;
+        }
+
+        /* Container utama full layar dengan efek transparan blur yang tinggi dan langsung tampil */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 20px;
+            gap: 20px; /* Jarak antar elemen utama dikontrol di sini */
+            
+            /* Efek Transparan Blur Full Layar (25px) */
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+
+            /* Langsung Tampil Tanpa Jeda */
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- BINGKAI LINGKAR PROFIL --- */
+        .profile-container {
+            position: relative;
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            
+            background-color: var(--dynamic-color, #FF69B4);
+            border: 2px solid #000000;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.95), 0 0 15px var(--dynamic-color, #FF69B4), 0 0 35px var(--dynamic-color-glow, rgba(255, 105, 180, 0.8));
+        }
+
+        .profile-pic {
+            width: 87px;
+            height: 87px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Wrapper khusus untuk Judul dan Subjudul agar berdekatan dengan profil */
+        .text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        /* Judul Utama (Shadow disesuaikan dengan variabel dinamis --dynamic-color & --dynamic-color-glow) */
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            color: #1A1A1A;
+            -webkit-text-fill-color: #1A1A1A;
+            -webkit-text-stroke: 1px #000000;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.95), 0 0 12px var(--dynamic-color, #FF69B4), 0 0 20px var(--dynamic-color-glow, rgba(255, 105, 180, 0.8));
+        }
+
+        h1 .gradient-text {
+            font-family: 'Montserrat', sans-serif;
+            color: #1A1A1A;
+            -webkit-text-fill-color: #1A1A1A;
+            font-weight: 900;
+            -webkit-text-stroke: 1px #000000;
+        }
+
+        /* Subjudul (Shadow disesuaikan dengan variabel dinamis --dynamic-color & --dynamic-color-glow) */
+        p {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            margin-bottom: 0;
+            flex-shrink: 0;
+            color: #1A1A1A;
+            -webkit-text-fill-color: #1A1A1A;
+            -webkit-text-stroke: 0.5px #000000;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95), 0 0 12px var(--dynamic-color, #FF69B4), 0 0 20px var(--dynamic-color-glow, rgba(255, 105, 180, 0.8));
+        }
+
+        p .gradient-text {
+            color: #1A1A1A;
+            -webkit-text-fill-color: #1A1A1A;
+            -webkit-text-stroke: 0.5px #000000;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95), 0 0 12px var(--dynamic-color, #FF69B4), 0 0 20px var(--dynamic-color-glow, rgba(255, 105, 180, 0.8));
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: 10px;
+        }
+
+        /* Tombol Utama */
+        .btn-single {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 22px 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            
+            background-color: #1A1A1A;
+            border: 2px solid #000000;
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            cursor: pointer;
+            overflow: hidden;
+            
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.95), 0 0 15px #FF0000, 0 0 30px rgba(255, 0, 0, 0.7);
+            
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: superPulse 2s infinite ease-in-out;
+        }
+
+        /* Styling Kata "online!" (Hijau Cerah) */
+        .text-green {
+            color: #39FF14;
+            -webkit-text-fill-color: #39FF14;
+            -webkit-text-stroke: 1px #000000;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9), 0 0 10px #39FF14;
+        }
+
+        /* Styling Kata "meet me now." (Merah Cerah) */
+        .text-red {
+            color: #FF0000;
+            -webkit-text-fill-color: #FF0000;
+            -webkit-text-stroke: 1px #000000;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9), 0 0 10px #FF0000;
+        }
+
+        /* Icon SVG Logo Warna Hijau Cerah */
+        .btn-single svg {
+            width: 26px;
+            height: 26px;
+            fill: #39FF14;
+            filter: drop-shadow(0 0 12px #39FF14);
+            flex-shrink: 0;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-single:hover {
+            transform: translateY(-5px) scale(1.08);
+            letter-spacing: 1.8px;
+            background-color: #2A2A2A;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 0, 0, 0.9);
+        }
+
+        .btn-single:hover svg {
+            transform: scale(1.25);
+        }
+
+        .btn-single:active {
+            transform: translateY(2px) scale(1.02);
+        }
+
+        @keyframes superPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px 15px; gap: 14px; }
+            .profile-container { width: 75px; height: 75px; }
+            .profile-pic { width: 67px; height: 67px; }
+            h1 { font-size: 0.95rem; letter-spacing: 1px; } 
+            p { font-size: 0.9rem; }
+            .btn-single { padding: 16px 24px; font-size: 1.05rem; width: 90%; max-width: 340px; }
+            .btn-single svg { width: 20px; height: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video id="bgVideo" autoplay loop muted playsinline>
+            <source id="videoSource" src="https://videotourl.com/videos/1790108790705-60736c02-e6bc-49b2-869e-37acf66cb78f.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video HTML5.
+        </video>
+    </div>
+
+    <div class="overlay"></div>
+
+    <div class="container" id="mainContainer">
+        <!-- Bingkai Lingkar Profil -->
+        <div class="profile-container">
+            <img src="https://s15.gifyu.com/images/buA4s.jpg" alt="Foto Profil" class="profile-pic">
+        </div>
+        
+        <!-- Grup Judul dan Subjudul -->
+        <div class="text-group">
+            <h1>😈<span class="gradient-text"> welcome </span>👩‍🦰</h1>
+            <p>😊❤️<span class="gradient-text"> Live Web Cam Video Chat </span>🍑💦</p>
+        </div>
+
+        <div class="button-group">
+            <!-- Tombol Utama -->
+            <button class="btn-single" onclick="handleClick()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                </svg>
+                <span><span class="text-green">online!</span> <span class="text-red">click me now.</span></span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Pilihan warna acak: Pink cerah, Tosca cerah, Biru muda cerah
+        const dynamicThemeColors = [
+            { color: "#FF69B4", glow: "rgba(255, 105, 180, 0.8)" }, // Pink cerah
+            { color: "#00F5D4", glow: "rgba(0, 245, 212, 0.8)" },  // Tosca cerah
+            { color: "#00BFFF", glow: "rgba(0, 191, 255, 0.8)" }   // Biru muda cerah
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Terapkan warna acak untuk elemen profil dan shadow terkait
+            const randomTheme = dynamicThemeColors[Math.floor(Math.random() * dynamicThemeColors.length)];
+            document.documentElement.style.setProperty('--dynamic-color', randomTheme.color);
+            document.documentElement.style.setProperty('--dynamic-color-glow', randomTheme.glow);
+
+            const bgVideo = document.getElementById("bgVideo");
+            const videoSource = document.getElementById("videoSource");
+            const randomBackgroundVideos = [
+                "https://videotourl.com/videos/1790108790705-60736c02-e6bc-49b2-869e-37acf66cb78f.mp4",
+                "https://videotourl.com/videos/1790111000863-75fd9143-c0ea-4862-92be-adf5a24094d5.mp4",
+                "https://videotourl.com/videos/1790110994031-d4c3a45f-e451-4819-907f-1456b9c14331.mp4",
+                "https://videotourl.com/videos/1790110986020-6db5ab75-134f-4632-855f-c3f75442ef42.mp4",
+                "https://videotourl.com/videos/1790110973389-c97d0c7f-5acc-4fe4-8f35-7c1ca0fc8152.mp4",
+                "https://videotourl.com/videos/1790110961929-949041a0-0a63-4b35-8a2b-58940383944b.mp4",
+                "https://videotourl.com/videos/1790110950672-1b97f749-202c-4409-8a3f-a52c28dcaa9f.mp4"
+            ];
+            const randomIndex = Math.floor(Math.random() * randomBackgroundVideos.length);
+            videoSource.src = randomBackgroundVideos[randomIndex];
+            bgVideo.load();
+            bgVideo.play().catch(error => {
+                console.log("Autoplay tercegah oleh browser:", error);
+            });
+        });
+
+        const randomLinks = [
+            "https://kara2970.arden96307.live/RU1QVFksbG9zcG9sbG9zLGV2YTE0NTYwMDgsT0JU",
+            "https://flora4056.posticlub.com/RU1QVFksSU1PTkVUSVpFSVQsZGFrb3RhMjQzNjMzMixPQlQ"
+        ];
+
+        const blockedCountries = ['ID', 'IN'];
+
+        async function handleClick() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+
+                if (blockedCountries.includes(data.country_code)) {
+                    window.location.href = "https://www.youtube.com";
+                } else {
+                    openRandomLink();
+                }
+            } catch (error) {
+                console.error("Gagal mendeteksi lokasi, menjalankan fungsi default:", error);
+                openRandomLink();
+            }
+        }
+
+        function openRandomLink() {
+            const randomIndex = Math.floor(Math.random() * randomLinks.length);
+            const selectedRandomUrl = randomLinks[randomIndex];
+            window.open(selectedRandomUrl, '_blank');
+        }
+    </script>
+</body>
+</html><script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="afb94237-9b36-4a88-b139-a864ce173e51" data-app-host="app.netlify.com"></script>
